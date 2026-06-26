@@ -2,9 +2,24 @@ let height = 6; //number of guesses
 let width = 5;  //length
 let row = 0, col = 0; //row and col
 let gameOver = false;
-let word = "SQUID"
+let wordList = [];
+let word = "";
+async function loadWords() {
+  const response = await fetch("word.txt");
+  const text = await response.text();
 
-window.onload = function() {
+  wordList = text
+    .split(/\r?\n/)
+    .map(word => word.trim().toUpperCase())
+    .filter(word => word.length === 5);
+
+  word = wordList[Math.floor(Math.random() * wordList.length)];
+
+  console.log("Today's word:", word);
+}
+
+window.onload = async function() {
+  await loadWords();
   intialize();
 }
 
